@@ -7034,7 +7034,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 				continue;
 
 			/*
-			 * Favor CPUs with smaller capacity for non latency
+			 * Favor CPUs with smaller capacity for Non latency
 			 * sensitive tasks.
 			 */
 			if (capacity_orig > target_capacity)
@@ -7065,6 +7065,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 			 * consumptions without affecting performance.
 			 */
 			if (idle_cpu(i)) {
+
 				/*
 				 * Skip CPUs in deeper idle state, but only
 				 * if they are also less energy efficient.
@@ -7076,6 +7077,7 @@ static inline int find_best_target(struct task_struct *p, int *backup_cpu,
 				    best_idle_cstate <= idle_idx)
 					continue;
 
+				/* Keep track of best idle CPU */
 				target_capacity = capacity_orig;
 				best_idle_cstate = idle_idx;
 				best_idle_cpu = i;
