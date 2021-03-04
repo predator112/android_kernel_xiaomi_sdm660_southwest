@@ -2461,6 +2461,7 @@ int smblib_get_prop_from_bms(struct smb_charger *chg,
 	return rc;
 }
 #ifdef CONFIG_MACH_LONGCHEER
+//begin for the total capacity of batt in  2017.10.18
 int smblib_get_prop_batt_charge_full(struct smb_charger *chg,
 				     union power_supply_propval *val)
 {
@@ -2475,6 +2476,7 @@ int smblib_get_prop_batt_charge_full(struct smb_charger *chg,
 		val->intval = 4000;
 	return 0;
 }
+//end for the total capacity of batt in 2017.10.18
 #elif defined (CONFIG_MACH_MI)
 int smblib_get_prop_batt_charge_full(struct smb_charger *chg,
 				union power_supply_propval *val)
@@ -2483,7 +2485,6 @@ int smblib_get_prop_batt_charge_full(struct smb_charger *chg,
 
 	if (!chg->bms_psy)
 			return -EINVAL;
-
 	rc = power_supply_get_property(chg->bms_psy,
 					POWER_SUPPLY_PROP_CHARGE_FULL_DESIGN, val);
 	return rc;
@@ -4997,7 +4998,9 @@ static void smblib_micro_usb_plugin(struct smb_charger *chg, bool vbus_rising)
 	if (vbus_rising) {
 		/* use the typec flag even though its not typec */
 		chg->typec_present = 1;
+		smblib_err(chg, "lct micro usb plugin\n");
 	} else {
+		smblib_err(chg, "lct micro usb plugout\n");
 		chg->typec_present = 0;
 		smblib_update_usb_type(chg);
 		extcon_set_cable_state_(chg->extcon, EXTCON_USB, false);
