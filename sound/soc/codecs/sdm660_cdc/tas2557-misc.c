@@ -1,7 +1,6 @@
 /*
 ** =============================================================================
 ** Copyright (c) 2016  Texas Instruments Inc.
-** Copyright (C) 2019 XiaoMi, Inc.
 **
 ** This program is free software; you can redistribute it and/or modify it under
 ** the terms of the GNU General Public License as published by the Free Software
@@ -440,7 +439,9 @@ static ssize_t tas2557_file_write(struct file *file, const char *buf, size_t cou
 			if (g_logEnable)
 				dev_info(pTAS2557->dev, "TIAUDIO_CMD_DACVOLUME, set to %d\n", volume);
 
-			tas2557_set_DAC_gain(pTAS2557, volume);
+			ret = tas2557_set_DAC_gain(pTAS2557, volume);
+			if (ret < 0)
+				goto err;
 		}
 	break;
 
