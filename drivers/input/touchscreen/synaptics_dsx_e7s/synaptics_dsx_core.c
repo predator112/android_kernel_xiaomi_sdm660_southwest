@@ -33,6 +33,7 @@
 
 #include <linux/kernel.h>
 #include <linux/module.h>
+#include <linux/proc_fs.h>
 #include <linux/slab.h>
 #include <linux/interrupt.h>
 #include <linux/delay.h>
@@ -953,6 +954,8 @@ static ssize_t synaptics_rmi4_wake_gesture_store(struct device *dev,
 	if (sscanf(buf, "%u", &input) != 1)
 		return -EINVAL;
 
+	input_event(rmi4_data->input_dev, EV_SYN, SYN_CONFIG, input ? WAKEUP_ON : WAKEUP_OFF);
+
 	if(synaptics_gesture_func_on)
 		input = input > 0 ? 1 : 0;
 	else
@@ -1004,6 +1007,34 @@ static ssize_t synaptics_rmi4_virtual_key_map_show(struct kobject *kobj,
 	}
 
 	return count;
+}
+
+static int synaptics_rmi4_proc_init(struct kernfs_node *sysfs_node_parent)
+{
+	int ret = 0;
+	char *buf, *path = NULL;
+	char *double_tap_sysfs_node;
+	struct proc_dir_entry *proc_entry_tp = NULL;
+	struct proc_dir_entry *proc_symlink_tmp  = NULL;
+
+	buf = kzalloc(PATH_MAX, GFP_KERNEL);
+	if (buf)
+		path = kernfs_path(sysfs_node_parent, buf, PATH_MAX);
+
+	double_tap_sysfs_node = kzalloc(PATH_MAX, GFP_KERNEL);
+	if (double_tap_sysfs_node)
+		sprintf(double_tap_sysfs_node, "/sys%s/%s", path, "wake_gesture");
+	proc_symlink_tmp = proc_symlink("wake_node",
+			proc_entry_tp, double_tap_sysfs_node);
+	if (proc_symlink_tmp == NULL) {
+		ret = -ENOMEM;
+		pr_err("%s: Couldn't create wake_node symlink\n", __func__);
+	}
+
+	kfree(buf);
+	kfree(double_tap_sysfs_node);
+
+	return ret;
 }
 
 static void synaptics_rmi4_f11_wg(struct synaptics_rmi4_data *rmi4_data,
@@ -1158,8 +1189,10 @@ static int synaptics_rmi4_f11_abs_report(struct synaptics_rmi4_data *rmi4_data,
 
 		if (detected_gestures) {
 			input_report_key(rmi4_data->input_dev, KEY_WAKEUP, 1);
+			input_report_key(rmi4_data->input_dev, KEY_DOUBLE_TAP, 1);
 			input_sync(rmi4_data->input_dev);
 			input_report_key(rmi4_data->input_dev, KEY_WAKEUP, 0);
+			input_report_key(rmi4_data->input_dev, KEY_DOUBLE_TAP, 0);
 			input_sync(rmi4_data->input_dev);
 			rmi4_data->suspend = false;
 		}
@@ -1320,8 +1353,10 @@ static int synaptics_rmi4_f12_abs_report(struct synaptics_rmi4_data *rmi4_data,
 
 		if (gesture_type && gesture_type != F12_UDG_DETECT) {
 			input_report_key(rmi4_data->input_dev, KEY_WAKEUP, 1);
+			input_report_key(rmi4_data->input_dev, KEY_DOUBLE_TAP, 1);
 			input_sync(rmi4_data->input_dev);
 			input_report_key(rmi4_data->input_dev, KEY_WAKEUP, 0);
+			input_report_key(rmi4_data->input_dev, KEY_DOUBLE_TAP, 0);
 			input_sync(rmi4_data->input_dev);
 
 			rmi4_data->suspend = false;
@@ -3384,7 +3419,7 @@ static int synaptics_rmi4_gpio_setup(int gpio, bool config, int dir, int state)
 	unsigned char buf[16];
 
 	if (config) {
-		snprintf(buf, PAGE_SIZE, "dsx_gpio_%u\n", gpio);
+		snprintf(buf, sizeof(buf), "dsx_gpio_%u\n", gpio);
 
 		retval = gpio_request(gpio, buf);
 		if (retval) {
@@ -3488,7 +3523,9 @@ static void synaptics_rmi4_set_params(struct synaptics_rmi4_data *rmi4_data)
 
 	if (rmi4_data->f11_wakeup_gesture || rmi4_data->f12_wakeup_gesture) {
 		set_bit(KEY_WAKEUP, rmi4_data->input_dev->keybit);
+		set_bit(KEY_DOUBLE_TAP, rmi4_data->input_dev->keybit);
 		input_set_capability(rmi4_data->input_dev, EV_KEY, KEY_WAKEUP);
+		input_set_capability(rmi4_data->input_dev, EV_KEY, KEY_DOUBLE_TAP);
 	}
 
 	return;
@@ -4364,6 +4401,8 @@ static int synaptics_rmi4_probe(struct platform_device *pdev)
 		}
 	}
 
+	synaptics_rmi4_proc_init(rmi4_data->input_dev->dev.kobj.sd);
+
 #ifdef USE_DATA_SERVER
 	memset(&interrupt_signal, 0, sizeof(interrupt_signal));
 	interrupt_signal.si_signo = SIGIO;
@@ -4395,7 +4434,7 @@ static int synaptics_rmi4_probe(struct platform_device *pdev)
 #endif
 #if  1
 	input_set_capability(rmi4_data->input_dev, EV_KEY, KEY_WAKEUP);
-
+	input_set_capability(rmi4_data->input_dev, EV_KEY, KEY_DOUBLE_TAP);
 	rmi4_data->input_dev->event =synaptics_gesture_switch;
 #endif
 	INIT_WORK(&rmi4_data->fb_notify_work, tp_fb_notifier_resume_work);
