@@ -11,9 +11,9 @@ jobs:
            git clone --depth=1 https://github.com/predator112/android_kernel_xiaomi_sdm660_southwest -b 11.0-eas-wifi-r kernel
            cd kernel
            git clone https://github.com/PREDATOR-project/myscripts.git -b master
-           chmod +x myscripts/clang-setup.sh
+           chmod +x myscripts/gcc-setup-9.sh
            chmod +x myscripts/new-base.sh
-           source ./myscripts/clang-setup.sh
+           source ./myscripts/gcc-setup-9.sh
            ./myscripts/new-base.sh
 workflows:
   version: 2.1
