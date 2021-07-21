@@ -2101,7 +2101,7 @@ void __mark_inode_dirty(struct inode *inode, int flags)
 
 	if (((inode->i_state & flags) == flags) ||
 	    (dirtytime && (inode->i_state & I_DIRTY_INODE)))
-		return
+		return;
 
 	spin_lock(&inode->i_lock);
 	if (dirtytime && (inode->i_state & I_DIRTY_INODE))
