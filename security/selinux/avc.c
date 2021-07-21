@@ -396,7 +396,6 @@ static int avc_add_xperms_decision(struct avc_node *node,
 static struct avc_xperms_node *avc_xperms_alloc(void)
 {
 	struct avc_xperms_node *xp_node;
-
 	xp_node = kmem_cache_zalloc(avc_xperms_cachep,
 			GFP_NOWAIT | __GFP_NOWARN);
 	if (!xp_node)
