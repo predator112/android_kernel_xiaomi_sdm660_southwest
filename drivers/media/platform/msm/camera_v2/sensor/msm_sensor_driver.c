@@ -1670,6 +1670,11 @@ int32_t msm_sensor_driver_probe(void *setting,
 	camera_info->sensor_id = slave_info->sensor_id_info.sensor_id;
 	camera_info->sensor_id_mask = slave_info->sensor_id_info.sensor_id_mask;
 
+#ifdef CONFIG_MACH_XIAOMI_SDM660
+	s_ctrl->sensordata->vendor_id_info = &slave_info->vendor_id_info;
+	s_ctrl->sensordata->vcm_id_info = &slave_info->vcm_id_info;
+#endif
+
 	/* Fill CCI master, slave address and CCI default params */
 	if (!s_ctrl->sensor_i2c_client) {
 		pr_err("failed: sensor_i2c_client %pK",
