@@ -259,7 +259,7 @@ module_param_named(
 #ifdef CONFIG_MACH_MI
 static int __weak_chg_icl_ua = 700000;
 #else
-static int __weak_chg_icl_ua = 500000;
+static int __weak_chg_icl_ua = 900000;
 #endif
 module_param_named(
 	weak_chg_icl_ua, __weak_chg_icl_ua, int, S_IRUSR | S_IWUSR);
