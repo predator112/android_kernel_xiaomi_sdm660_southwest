@@ -661,8 +661,7 @@ static ssize_t devkmsg_write(struct kiocb *iocb, struct iov_iter *from)
 		}
 	}
 
-	if (!strncmp("healthd", line, 7)) ||
-                strncmp(line, "logd: Skipping", sizeof("logd: Skipping")))
+	if (!strncmp("healthd", line, 7))
 		goto free;
 
 	printk_emit(facility, level, NULL, 0, "%s", line);
