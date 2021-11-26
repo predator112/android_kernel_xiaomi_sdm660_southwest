@@ -3125,7 +3125,7 @@ static void binder_transaction(struct binder_proc *proc,
 		t->from = thread;
 	else
 		t->from = NULL;
-	t->sender_euid = task_euid(proc->tsk);
+	t->sender_euid = proc->cred->euid;
 	t->to_proc = target_proc;
 	t->to_thread = target_thread;
 	t->code = tr->code;
@@ -3351,7 +3351,7 @@ static void binder_transaction(struct binder_proc *proc,
 				goto err_bad_offset;
 			}
 			if (copy_from_user(sg_bufp,
-					   (const void __user *)(uintptr_t)
+ 					   (const void __user *)(uintptr_t)
 					   bp->buffer, bp->length)) {
 				binder_user_error("%d:%d got transaction with invalid offsets ptr\n",
 						  proc->pid, thread->pid);
@@ -5320,7 +5320,6 @@ static void binder_deferred_release(struct binder_proc *proc)
 
 	binder_release_work(proc, &proc->todo);
 	binder_release_work(proc, &proc->delivered_death);
-
 	binder_debug(BINDER_DEBUG_OPEN_CLOSE,
 		     "%s: %d threads %d, nodes %d (ref %d), refs %d, active transactions %d\n",
 		     __func__, proc->pid, threads, nodes, incoming_refs,
