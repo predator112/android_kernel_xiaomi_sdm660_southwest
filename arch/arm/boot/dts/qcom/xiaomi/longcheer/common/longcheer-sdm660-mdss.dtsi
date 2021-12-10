@@ -85,7 +85,6 @@
 		25 1e 08 0a 06 03 04 a0];
 	qcom,mdss-dsi-min-refresh-rate = <48>;
 	qcom,mdss-dsi-max-refresh-rate = <60>;
-	/delete-property/ qcom,mdss-brightness-max-level;
 };
 
  &dsi_nt36672a_tianma_fhdplus_video {
@@ -96,7 +95,6 @@
                26 20 0a 0b 06 03 04 a0];
 	qcom,mdss-dsi-min-refresh-rate = <48>;
         qcom,mdss-dsi-max-refresh-rate = <60>;
-		/delete-property/ qcom,mdss-brightness-max-level;
 };
 
  &dsi_nt36672a_shenchao_fhdplus_video {
@@ -107,7 +105,6 @@
                26 20 0a 0b 06 03 04 a0];
 	qcom,mdss-dsi-min-refresh-rate = <48>;
         qcom,mdss-dsi-max-refresh-rate = <60>;
-		/delete-property/ qcom,mdss-brightness-max-level;
 };
 
  &dsi_td4320_boe_fhdplus_video {
@@ -118,7 +115,6 @@
                26 20 0a 0b 06 03 04 a0];
 	qcom,mdss-dsi-min-refresh-rate = <48>;
         qcom,mdss-dsi-max-refresh-rate = <60>;
-		/delete-property/ qcom,mdss-brightness-max-level;
 };
 
  &dsi_nt36672a_e7t_tianma_fhdplus_video {
@@ -129,7 +125,6 @@
                26 20 0a 0b 06 03 04 a0];
 	qcom,mdss-dsi-min-refresh-rate = <48>;
         qcom,mdss-dsi-max-refresh-rate = <60>;
-		/delete-property/ qcom,mdss-brightness-max-level;
 };
 
  &dsi_nt36672a_e7t_shenchao_fhdplus_video {
@@ -140,7 +135,7 @@
                26 20 0a 0b 06 03 04 a0];
 	qcom,mdss-dsi-min-refresh-rate = <48>;
         qcom,mdss-dsi-max-refresh-rate = <60>;
-		/delete-property/ qcom,mdss-brightness-max-level;
+
  };
 
  &dsi_ft8719_e7t_boe_fhdplus_video {
@@ -151,5 +146,4 @@
                 26 20 0a 0b 06 03 04 a0];
         qcom,mdss-dsi-min-refresh-rate = <48>;
         qcom,mdss-dsi-max-refresh-rate = <60>;
-		/delete-property/ qcom,mdss-brightness-max-level;
 };
