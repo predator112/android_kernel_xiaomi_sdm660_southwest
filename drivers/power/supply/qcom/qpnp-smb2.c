@@ -2178,7 +2178,7 @@ static int smb2_init_hw(struct smb2 *chip)
 		break;
 	}
 #ifdef CONFIG_MACH_LONGCHEER
-	rc = vote(chg->chg_disable_votable, DEFAULT_VOTER, false, 0)	//add for 99% don't charge when power off in 2018.03.01
+	rc = vote(chg->chg_disable_votable, DEFAULT_VOTER, false, 0);	//add for 99% don't charge when power off in 2018.03.01
 #endif
 	if (rc < 0) {
 		dev_err(chg->dev, "Couldn't configure charge inhibit threshold rc=%d\n",
