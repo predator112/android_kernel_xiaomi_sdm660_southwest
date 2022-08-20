@@ -44,10 +44,10 @@
 #include <linux/input/synaptics_dsx.h>
 #include "synaptics_dsx_core.h"
 #include <linux/input/mt.h>
-#include <linux/kthread.h>
-#include <linux/sched/rt.h>
 
 #endif
+#include <linux/kthread.h>
+#include <linux/sched/rt.h>
 #include "../lct_tp_gesture.h"
 #ifdef CONFIG_TOUCHSCREEN_COMMON
 #include <linux/input/tp_common.h>
