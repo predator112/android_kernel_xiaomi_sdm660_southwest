@@ -2,8 +2,7 @@ version: 2.1
 jobs:
   compile:
    docker:
-      - image: ubuntu:20.04
-   resource_class: xlarge
+      - image: ubuntu:20.04.4
    steps:
       - run:
           no_output_timeout: 50m
