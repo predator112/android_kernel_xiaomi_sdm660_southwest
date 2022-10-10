@@ -7,7 +7,7 @@ jobs:
       - run:
           no_output_timeout: 50m
           command: |
-           git clone https://github.com/ini23/android_kernel_xiaomi_sdm660_southwest -b 11.0-eas-wifi-r kernel
+           git clone https://github.com/iqba78/android_kernel_xiaomi_sdm660_southwest -b 11.0-eas-wifi-r kernel
            cd kernel
            git clone https://github.com/PREDATOR-project/myscripts.git -b master
            chmod +x myscripts/clang-setup.sh
