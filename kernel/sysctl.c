@@ -333,13 +333,6 @@ static struct ctl_table kern_table[] = {
 		.proc_handler   = proc_dointvec_minmax,
 		.extra1         = &zero,
 		.extra2         = &one,
-       },
-       {
-		.procname	= "sched_cpu_schedtune_bias",
-		.data		= &sysctl_sched_cpu_schedtune_bias,
-		.maxlen		= sizeof(unsigned int),
-		.mode		= 0644,
-		.proc_handler	= proc_dointvec,
 	},
 	{
 		.procname	= "sched_min_granularity_ns",
