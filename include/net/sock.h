@@ -428,7 +428,6 @@ struct sock {
 	__u32			sk_priority;
 	spinlock_t		sk_peer_lock;
 	__u32			sk_mark;
-	pid_t			pid_num;
 	struct pid		*sk_peer_pid;
 	const struct cred	*sk_peer_cred;
 
